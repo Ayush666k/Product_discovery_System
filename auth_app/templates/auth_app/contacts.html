@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Contacts us</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <style>
+        body {
+            background: linear-gradient(135deg, #6e8efb, #a777e3);
+            color: #fff;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        .navbar {
+            backdrop-filter: blur(10px);
+            background-color: rgba(0, 0, 0, 0.6) !important;
+        }
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+        .navbar a {
+            color: #00f3ff;
+            text-decoration: none;
+            font-weight: 500;
+            position: relative;
+            transition: 0.3s;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+        }
+        .navbar a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: 0;
+            left: 0;
+            background: #00f3ff;
+            transition: 0.3s;
+        }
+
+        nav a:hover::after {
+            width: 100%;
+        }
+
+        .container-form {
+            max-width: 600px;
+            margin: 80px auto;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .form-control {
+            background: rgba(255, 255, 255, 0.2);
+            color: #fff;
+            border: 1px solid #ddd;
+            transition: 0.3s;
+        }
+        .form-control:focus {
+            border-color: #fff;
+            background: rgba(255, 255, 255, 0.3);
+            box-shadow: none;
+        }
+        .btn-primary {
+            background-color: #ff4b5c;
+            border: none;
+            transition: 0.3s;
+        }
+        .btn-primary:hover {
+            background-color: #ff2e50;
+        }
+        .social-icons a {
+            color: #fff;
+            font-size: 24px;
+            margin: 0 10px;
+            transition: 0.3s;
+        }
+        .social-icons a:hover {
+            color: #ff4b5c;
+        }
+        #successMessage {
+            display: none;
+            text-align: center;
+            margin-top: 15px;
+            padding: 10px;
+            background: rgba(0, 255, 0, 0.2);
+            border: 1px solid green;
+            border-radius: 5px;
+        }
+
+        /* Footer */
+        .footer {
+            background: rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
+            color: #fff;
+            text-align: center;
+            padding: 30px;
+            margin-top: 60px;
+        }
+
+
+        .footer a {
+            color: #00d2ff;
+            text-decoration: none;
+
+        }
+        .footer p {
+            margin: -5px;
+        }
+
+        .footer a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+  <!--    Navbar section-->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="{% url 'home' %}"><i class="fas fa-search me-2">
+            </i>Product Discovery</a>
+            <ul class="nav-links">
+                <li><a href="{% url 'home' %}">Home</a></li>
+                {% if request.session.username %}
+                <li><a href="#">Welcome, {{ request.session.username|default:"User" }}</a></li>
+                <li><a href="{% url 'logout' %}">Logout</a></li>
+                {% else %}
+                <li><a href="{% url 'login' %}">Login</a></li>
+             {% endif %}
+                <li><a href="{% url 'contact' %}">Contacts</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!--  contact form-->
+    <div class="container-form">
+        <h2 class="text-center">Contact Us</h2>
+        <form id="contactForm" method="POST" action="{% url 'contact' % }">
+            {% csrf_token %}
+            <div class="mb-3">
+                <label class="form-label">Name</label>
+                <input type="text" name="name" class="form-control" required>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Email</label>
+                <input type="Email" name="email" class="form-control" required>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Subject</label>
+                <input type="text" name="subject" class="form-control" required>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Message</label>
+                <textarea name="message" class="form-control" rows="4" required></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary w-100">Send Message</button>
+        </form>
+
+        <div id="successMessage">
+            ✅ Message sent successfully!
+        </div>
+
+        <div class="text-center mt-4">
+            <p>Or reach out to us via:</p>
+            <div class="social-icons">
+                <a href="mailto:aayus2247x@gmail.com" aria-label="Mailbox"><i class="fas fa-envelope"></i></a>
+                <a href="https://www.linkedin.com/in/ayush-kumavat-366b09217/" aria-label="LinkedIn"><i class="fab fa-linkedin"></i></a>
+                <a href="https://github.com/Ayush666k" aria-label="github"><i class="fab fa-github"></i></a>
+            </div>
+        </div>
+    </div>
+
+  <!--  footer-->
+  <div class="footer">
+        <p>&copy; 2025 Product Discovery System. All rights reserved.</p>
+        <p><a href="#">Privacy Policy</a> | <a href="#">Terms of Service</a></p>
+        <p><a href="{% url 'contact' %}">Contact Us</a></p>
+    </div>
+
+<script>
+    document.getElementById("contactForm").onsubmit = async function (e) {
+         e.preventDefault();
+         const formData = new FormData(this);
+
+         const response = await fetch("{% url 'contact' %}", {
+           method: "POST",
+           body: formData
+         });
+
+         const data = await response.json();
+         if (data.success) {
+            document.getElementById("successMessage").style.display = "block";
+            this.reset();
+            setTimeout(() => {
+                    document.getElementById("successMessage").style.display = "none";
+            }, 3000);
+         }
+    };
+</script>
+</body>
+</html>

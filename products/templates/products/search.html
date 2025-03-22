@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search Results</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome Icons -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <style>
+        /* General Styles */
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+            color: #fff;
+            margin-top: 5%;
+            padding: 0;
+        }
+
+        h1, h2, h3 {
+            font-weight: 700;
+            color: #fff;
+        }
+
+        p {
+            color: #ccc;
+        }
+
+        .navbar {
+            backdrop-filter: blur(10px);
+            background-color: rgba(0, 0, 0, 0.6) !important;
+        }
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+        .navbar a {
+            color: #00f3ff;
+            text-decoration: none;
+            font-weight: 500;
+            position: relative;
+            transition: 0.3s;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+        }
+        .navbar a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: 0;
+            left: 0;
+            background: #00f3ff;
+            transition: 0.3s;
+        }
+
+        nav a:hover::after {
+            width: 100%;
+        }
+
+
+        /* Search Form */
+        .search-form {
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .search-form .form-control, .search-form .form-select {
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: #fff;
+            padding: 12px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+
+        .search-form .form-control::placeholder, .search-form {
+            color: #a8a8a8;
+        }
+
+        .form-select option {
+            color:black;
+        }
+
+        .search-form .form-control:focus, .search-form .form-select:focus {
+            background: rgba(255, 255, 255, 0.2);
+            border-color: #00d2ff;
+            box-shadow: 0 0 10px rgba(0, 210, 255, 0.5);
+        }
+
+        .search-form .btn-primary {
+            background: linear-gradient(90deg, #00d2ff, #3a7bd5);
+            border: none;
+            padding: 12px 30px;
+            font-size: 16px;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .search-form .btn-primary:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 20px rgba(0, 210, 255, 0.7);
+        }
+
+        /* Search Results */
+        .search-results {
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 20px;
+        }
+
+        .search-results ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .search-results li {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .search-results li:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
+            border-color: #00d2ff;
+        }
+
+        .search-results img {
+            border-radius: 10px;
+            max-width: 100%;
+            height: 150px;
+            object-fit: cover;
+            margin-bottom: 10px;
+        }
+
+        .search-results h3 {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+            color: #00d2ff;
+        }
+
+        .search-results p {
+            font-size: 1rem;
+            color: #ccc;
+        }
+
+        /* Pagination */
+        .pagination {
+            display: flex;
+            justify-content: center;
+            margin-top: 30px;
+        }
+
+        .pagination a {
+            margin: 0 5px;
+            padding: 8px 16px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 10px;
+            color: #fff;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .pagination a:hover {
+            background: rgba(0, 210, 255, 0.5);
+            transform: scale(1.1);
+        }
+
+        .pagination .current {
+            padding: 8px 16px;
+            background: rgba(0, 210, 255, 0.5);
+            border-radius: 10px;
+            color: #fff;
+        }
+
+        /* Loading Spinner */
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #00d2ff;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        /* Footer */
+        .footer {
+            background: rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
+            color: #fff;
+            text-align: center;
+            padding: 30px;
+            margin-top: 60px;
+        }
+
+        .footer a {
+            color: #00d2ff;
+            text-decoration: none;
+        }
+
+        .footer a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+     <!--    Navbar section-->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="{% url 'home' %}"><i class="fas fa-search me-2">
+            </i>Product Discovery</a>
+            <ul class="nav-links">
+                <li><a href="{% url 'home' %}">Home</a></li>
+                {% if request.session.username %}
+                    <li><a href="#">Welcome, {{ request.session.username|default:"User" }}</a></li>
+                    <li><a href="{% url 'logout' %}">Logout</a></li>
+                {% else %}
+                    <li><a href="{% url 'login' %}">Login</a></li>
+                {% endif %}
+                <li><a href="{% url 'contact' %}">Contacts</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Search Form -->
+    <div class="search-form mt-5">
+        <form method="GET" action="{% url 'search_products' %}" onsubmit="document.getElementById('loading').style.display = 'block';">
+            <div class="row g-3">
+                <div class="col-md-3">
+                    <input type="text" name="q" id="search-box" class="form-control" placeholder="Search..." value="{{ query }}">
+                    <div id="suggestions" style="border: 1px solid #ccc; max-height: 150px; overflow-y: auto; display: none;"></div>
+                </div>
+                <div class="col-md-2">
+                    <input type="number" name="min_price" class="form-control" placeholder="Min Price" value="{{ min_price|default_if_none:'' }}" step="0.01" min="0">
+                </div>
+                <div class="col-md-2">
+                    <input type="number" name="max_price" class="form-control" placeholder="Max Price" value="{{ max_price|default_if_none:'' }}" step="0.01" min="0">
+                </div>
+                <div class="col-md-2">
+                    <select name="sort" class="form-select">
+                        <option value="">Sort By</option>
+                        <option value="price_asc" {% if sort == 'price_asc' %}selected{% endif %}>Price: Low to High</option>
+                        <option value="price_desc" {% if sort == 'price_desc' %}selected{% endif %}>Price: High to Low</option>
+                        <option value="rating" {% if sort == 'rating' %}selected{% endif %}>Rating</option>
+                        <option value="title_asc" {% if sort == 'title_asc' %}selected{% endif %}>Title (A–Z)</option>
+                        <option value="title_desc" {% if sort == 'title_desc' %}selected{% endif %}>Title (Z–A)</option>
+                    </select>
+                </div>
+                <div class="col-md-2">
+                    <select name="category" class="form-select">
+                        <option value="">All Categories</option>
+                        <option value="electronics" {% if category == 'electronics' %}selected{% endif %}>Electronics</option>
+                        <option value="fashion" {% if category == 'fashion' %}selected{% endif %}>Fashion</option>
+                    </select>
+                </div>
+                <div class="col-md-2">
+                    <select name="brand" class="form-select">
+                        <option value="">All Brands</option>
+                        <option value="apple" {% if brand == 'apple' %}selected{% endif %}>Apple</option>
+                        <option value="samsung" {% if brand == 'samsung' %}selected{% endif %}>Samsung</option>
+                    </select>
+                </div>
+                <div class="col-md-2">
+                    <select name="rating" class="form-select">
+                        <option value="">Any Rating</option>
+                        <option value="4" {% if rating == '4' %}selected{% endif %}>4 Stars & Up</option>
+                        <option value="5" {% if rating == '5' %}selected{% endif %}>5 Stars</option>
+                    </select>
+                </div>
+                <div class="col-md-12 text-center">
+                    <button type="submit" class="btn btn-primary">Search</button>
+                    <a href="?q={{ query }}" class="btn btn-danger">Clear Filters</a>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <!-- Loading Spinner -->
+    <div id="loading" style="display: none; text-align: center;">
+        <p>Loading results... please wait.</p>
+        <div class="spinner"></div>
+    </div>
+
+    <!-- Search Results -->
+    <div class="search-results">
+        <h1>Search Results for "{{ query }}"</h1>
+        <p>Total results found: {{ total_results }}</p>
+
+        {% if page_obj %}
+        <ul>
+            {% for item in page_obj %}
+            <li>
+                {% if item.image %}
+                <img src="{{ item.image }}" alt="{{ item.title }}">
+                {% endif %}
+                <h3><a href="{% url 'product_detail' item.id %}">{{ item.title }}</a></h3>
+                <p>{{ item.snippet }}</p>
+            </li>
+            {% endfor %}
+        </ul>
+        {% else %}
+        <p>No results found.</p>
+        {% endif %}
+    </div>
+
+    <!-- Pagination -->
+    <div class="pagination">
+        {% if page_obj.has_previous %}
+        <a href="?q={{ query }}&category={{ category }}&brand={{ brand }}&rating={{ rating }}&sort={{ sort }}&min_price={{ min_price|default_if_none:'' }}&max_price={{ max_price|default_if_none:'' }}&page=1">First</a>
+        <a href="?q={{ query }}&category={{ category }}&brand={{ brand }}&rating={{ rating }}&sort={{ sort }}&min_price={{ min_price|default_if_none:'' }}&max_price={{ max_price|default_if_none:'' }}&page={{ page_obj.previous_page_number }}">Previous</a>
+        {% endif %}
+
+        <span class="current">Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span>
+
+        {% if page_obj.has_next %}
+        <a href="?q={{ query }}&category={{ category }}&brand={{ brand }}&rating={{ rating }}&sort={{ sort }}&min_price={{ min_price|default_if_none:'' }}&max_price={{ max_price|default_if_none:'' }}&page={{ page_obj.next_page_number }}">Next</a>
+        <a href="?q={{ query }}&category={{ category }}&brand={{ brand }}&rating={{ rating }}&sort={{ sort }}&min_price={{ min_price|default_if_none:'' }}&max_price={{ max_price|default_if_none:'' }}&page={{ page_obj.paginator.num_pages }}">Last</a>
+        {% endif %}
+    </div>
+
+     <!-- Footer -->
+    <div class="footer">
+        <p>&copy; 2025 Product Discovery System. All rights reserved.</p>
+        <p><a href="#">Privacy Policy</a> | <a href="#">Terms of Service</a></p>
+        <p><a href="{% url 'contact' %}">Contact_us</a></p>
+    </div>
+
+    <script>
+        function selectSuggestion(value) {
+            document.getElementById('search-box').value = value;
+            document.getElementById('suggestions').style.display = 'none';
+        }
+
+        document.getElementById('search-box').addEventListener('input', function() {
+            const input = this.value.toLowerCase();
+            const suggestions = ["laptop", "mobile", "headphones", "shoes", "watch"];
+            let filtered = suggestions.filter(s => s.includes(input));
+            let output = filtered.map(s => `<div onclick="selectSuggestion('${s}')" style="padding: 5px; cursor: pointer; background-color: #f9f9f9; border-bottom: 1px solid #ddd;">${s}</div>`).join('');
+            document.getElementById('suggestions').innerHTML = output;
+            document.getElementById('suggestions').style.display = filtered.length ? 'block' : 'none';
+        });
+    </script>
+</body>
+</html>

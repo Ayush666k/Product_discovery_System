@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Discovery</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome Icons -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    {% load static %}
+    <style>
+        /* General Styles */
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+            background-size: 400% 400%;
+            color: #333;
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+        }
+
+        h1, h2, h3 {
+            font-weight: 700;
+            color: #2c3e50;
+        }
+
+        p {
+            color: #7f8c8d;
+        }
+        @keyframes animateBg {
+             0% { background-position: 0% 50%; }
+             50% { background-position: 100% 50%; }
+             100% { background-position: 0% 50%; }
+        }
+
+        /* Header Section */
+        .header {
+            padding: 100px 20px;
+            text-align: center;
+            background: linear-gradient(-45deg, #0f0c29, #302b63, #24243e, #141e30);
+            background-size: 400% 400%;
+            animation: animateBg 6s ease infinite;
+
+             color: #ffffff;
+
+            font-size: 2.5rem;
+            font-weight: bold;
+            border-radius: 12px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            box-shadow: 0 0 20px rgba(0, 255, 255, 0.5); /* Neon glow */
+            backdrop-filter: blur(10px); /* Glass effect */
+            border: 2px solid rgba(255, 255, 255, 0.2); /* Subtle border */
+            position: relative;
+            overflow: hidden;
+
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+        .header::before {
+            content: "";
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle, rgba(0, 255, 255, 0.3) 10%, transparent 70%);
+            animation: bgGlow 6s infinite alternate ease-in-out, glowEffect 6s linear infinite;
+            opacity: 0.8;
+
+        }
+        @keyframes glowEffect {
+            0% { transform: translate(0, 0); }
+            50% { transform: translate(50%, 50%); }
+            100% { transform: translate(0, 0); }
+        }
+
+        .header h1 {
+            font-size: 3rem;
+            color: yellow;
+            margin-bottom: 10px;
+            letter-spacing: 2px;
+            animation: glow 1.5s infinite alternate, fadeInDown 1s ease-in-out;
+        }
+
+        .header p {
+            font-size: 1.25rem;
+            opacity: 0.9;
+            animation: fadeInUp 1s ease-in-out;
+        }
+
+           /* Particle Animation */
+        .particles {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index:1
+            pointer-events: none;
+        }
+        .particle {
+            position: absolute;
+            width: 5px;
+            height: 5px;
+            background: white;
+            border-radius: 50%;
+            opacity: 0.8;
+            animation: floatParticles linear infinite;
+        }
+        @keyframes floatParticles {
+            0% { transform: translateY(0px); opacity: 0.8; }
+            100% { transform: translateY(-100vh); opacity: 0; }
+        }
+
+         @keyframes glow {
+            0% {
+                text-shadow: 0 0 10px #00d2ff, 0 0 20px #00d2ff, 0 0 30px #00d2ff;
+            }
+            100% {
+                text-shadow: 0 0 20px #3a7bd5, 0 0 30px #3a7bd5, 0 0 40px #3a7bd5;
+            }
+        }
+
+        @keyframes fadeInDown {
+            0% {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            0% {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        .navbar {
+            backdrop-filter: blur(10px);
+            background-color: rgba(0, 0, 0, 0.6) !important;
+        }
+        .navbar a {
+            color: #00f3ff;
+            text-decoration: none;
+            font-weight: 500;
+            position: relative;
+            transition: 0.3s;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+        }
+        .navbar a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: 0;
+            left: 0;
+            background: #00f3ff;
+            transition: 0.3s;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        nav a:hover::after {
+            width: 100%;
+        }
+
+        /* Search Form */
+        .search-form {
+            max-width: 800px;
+            margin: -50px auto 30px;
+            padding: 30px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            position: relative;
+            z-index: 1;
+        }
+
+        .search-form .form-control, .search-form .form-select {
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: #fff;
+            padding: 12px;
+            font-size: 16px;
+            border: 1px solid #e0e0e0;
+            transition: all 0.3s ease;
+        }
+        .search-form .form-control::placeholder, .search-form .form-select option {
+            color: #a8a8a8;
+        }
+
+        .search-form .form-control:focus, .search-form .form-select:focus {
+            background: rgba(255, 255, 255, 0.2);
+            border-color: #00d2ff;
+            box-shadow: 0 0 10px rgba(0, 210, 255, 0.5);
+        }
+
+        .search-form .btn-primary {
+            background: linear-gradient(90deg, #00d2ff, #3a7bd5);
+            border: none;
+            padding: 12px 30px;
+            font-size: 16px;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .search-form .btn-primary:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 20px rgba(0, 210, 255, 0.7);
+        }
+
+        /* Product List */
+        .product-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+            margin: 20px;
+        }
+
+        .product-item {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 20px;
+            width: 200px;
+            text-align: center;
+            transition: all 0.3s ease;
+            overflow: hidden;
+        }
+
+        .product-item:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
+            border-color: #00d2ff;
+            transform: scale(1.05);
+        }
+        .product-item::before {
+            content: "";
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: rgba(255, 255, 255, 0.2);
+            transform: rotate(30deg);
+            transition: 0.5s;
+        }
+        .product-item:hover::before {
+            top: 100%;
+            left: 100%;
+        }
+
+        .product-item img {
+            border-radius: 10px;
+            width: 100%;
+            height: 150px;
+            object-fit: contain;
+            display: block;
+            background-color: #f8f8f8;
+        }
+
+        .product-item p {
+            margin: 15px 0;
+            font-size: 16px;
+            color: #fff;
+        }
+
+        .product-item a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        /* Trending Searches */
+        .trending-section {
+            text-align: center;
+            margin: 60px 0;
+        }
+
+        .trending-section h2 {
+            font-size: 2.5rem;
+            background: linear-gradient(90deg, #00d2ff, #3a7bd5);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: glow 2s infinite alternate;
+
+        }
+
+        .search-item {
+            display: inline-block;
+            margin: 15px;
+            text-align: center;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 15px;
+            transition: all 0.3s ease;
+        }
+
+        .search-item:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
+            border-color: #00d2ff;
+        }
+
+        .search-item img {
+            border-radius: 10px;
+            width: 150px;
+            max-height: 250px;
+            object-fit: cover;
+
+        }
+
+        .search-item p {
+            margin: 10px 40px;
+            font-size: 16px;
+            color: #fff;
+        }
+
+        .search-item a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+
+
+        /* Footer */
+        .footer {
+            background: rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
+            color: #fff;
+            text-align: center;
+            padding: 30px;
+            margin-top: 60px;
+        }
+
+        .footer a {
+            color: #00d2ff;
+            text-decoration: none;
+        }
+
+        .footer a:hover {
+            text-decoration: underline;
+        }
+
+        /* Loading Spinner */
+        .loading-spinner {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 1000;
+        }
+
+        .loading-spinner .spinner-border {
+            width: 3rem;
+            height: 3rem;
+            color: #00d2ff;
+        }
+    </style>
+</head>
+<body>
+
+
+    <!-- Header Section -->
+        <div class="header">
+            <h1>Welcome to the Product Discovery System</h1>
+            <p>Your gateway to discovering the best products!</p>
+            <div class="particles"></div>
+    </div>
+
+    <!--    Navbar section-->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="#"><i class="fas fa-search me-2">
+            </i>Product Discovery</a>
+            <ul class="nav-links">
+                <li><a href="{% url 'home' %}">Home</a></li>
+                {% if request.session.username %}
+                <li><a href="#">Welcome, {{ request.session.username|default:"User" }}</a></li>
+                <li><a href="{% url 'logout' %}">Logout</a></li>
+                {% else %}
+                <li><a href="{% url 'login' %}">Login</a></li>
+             {% endif %}
+                <li><a href="{% url 'contact' %}">Contacts</a></li>
+            </ul>
+        </div>
+    </nav>
+
+
+    <!-- Search Form -->
+    <div class="container">
+        <div class="search-form">
+            <form id="searchform" action="{% url 'search_products' %}" method="GET">
+                <div class="row g-3">
+                    <div class="col-md-4">
+                        <input type="text" name="q" class="form-control" placeholder="Search for a product..." required>
+                    </div>
+                    <div class="col-md-2">
+                        <select id="category" name="category" class="form-select">
+                            <option value="">All Categories</option>
+                            <option value="mobile">Mobile</option>
+                            <option value="laptop">Laptop</option>
+                            <option value="headphones">Headphones</option>
+                        </select>
+                    </div>
+                    <div class="col-md-2">
+                        <select name="brand" class="form-select">
+                            <option value="">All Brands</option>
+                            <option value="apple">Apple</option>
+                            <option value="samsung">Samsung</option>
+                            <option value="hp">HP</option>
+                        </select>
+                    </div>
+                    <div class="col-md-2">
+                        <select name="price" class="form-select">
+                            <option value="">All Prices</option>
+                            <option value="0-10000">0-10000rs</option>
+                            <option value="10000-20000">10000-20000rs</option>
+                            <option value="20000-50000">20000-50000rs</option>
+                        </select>
+                    </div>
+                    <div class="col-md-2">
+                        <select name="rating" class="form-select">
+                            <option value="">All Ratings</option>
+                            <option value="4">4 stars & above</option>
+                            <option value="3">3 stars & above</option>
+                            <option value="2">2 stars & above</option>
+                        </select>
+                    </div>
+                    <div class="col-md-12 text-center">
+                        <button type="submit" class="btn btn-primary btn-lg">Search</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Product List -->
+    <div class="container">
+        <div class="product-list">
+            {% for products in latest_products %}
+            <div class="product-item">
+                {% if products.image %}
+                    <img src="{{ products.image }}" alt="{{ products.title }}">
+                {% else %}
+                    <p>No image available</p>
+                {% endif %}
+                <p><strong>
+                    <a href="{% url 'product_detail' products.product_id %}" target="_blank">
+                        {{ products.title }}
+                    </a>
+                </strong></p>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- Trending Searches -->
+    <div class="container">
+        <div class="trending-section">
+            <h2>Trending Searches</h2>
+            {% if top_searches %}
+                {% for search in top_searches %}
+                <div class="search-item">
+                    <a href="{% url 'home' %}" target="_blank">
+                        <img src="{{ search.image }}" alt="{{ search.item }}">
+                        <p>{{ search.title }}</p>
+                    </a>
+                </div>
+                {% endfor %}
+            {% else %}
+                <p>No trending searches yet. Try searching something!</p>
+            {% endif %}
+        </div>
+    </div>
+
+
+
+    <!-- Footer -->
+    <div class="footer">
+        <p>&copy; 2025 Product Discovery System. All rights reserved.</p>
+        <p><a href="#">Privacy Policy</a> | <a href="#">Terms of Service</a></p>
+        <p><a href="{% url 'contact' %}">Contact Us</a></p>
+    </div>
+
+    <!-- Loading Spinner -->
+    <div class="loading-spinner">
+        <div class="spinner-border" role="status">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Custom JS -->
+    <script>
+
+        // Loading Spinner
+        const searchForm = document.getElementById('searchform');
+        const loadingSpinner = document.querySelector('.loading-spinner');
+
+        searchForm.addEventListener('submit', () => {
+            loadingSpinner.style.display = 'block';
+        });
+    </script>
+     <script>
+        const particlesContainer = document.querySelector(".particles");
+
+        function createParticle() {
+            const particle = document.createElement("div");
+            particle.classList.add("particle");
+
+            let size = Math.random() * 10 + 5;
+            particle.style.width = `${size}px`;
+            particle.style.height = `${size}px`;
+
+            particle.style.left = Math.random() * window.innerWidth + "px";
+            particle.style.top = window.innerHeight + "px";
+            particle.style.animationDuration = Math.random() * 5 + 3 + "s";
+
+            particlesContainer.appendChild(particle);
+
+            setTimeout(() => {
+                particle.remove();
+            }, 8000);
+        }
+
+        setInterval(createParticle, 150);
+    </script>
+</body>
+</html>
